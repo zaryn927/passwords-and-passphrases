@@ -1,7 +1,11 @@
 package edu.cnm.deepdive.security;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class WordList {
@@ -9,7 +13,7 @@ public class WordList {
   public static final int DEFAULT_NUM_WORDS = 5;
   
   private static final String PROPERTIES_FILE = "resources/text.properties";
-  private static final String WORD_LIST = "resources/eff_large_wordlist.txt";
+  private static final String WORD_LIST_FILE = "resources/eff_large_wordlist.txt";
   
   private static String usageMessage;
   private static String errorMessage;
@@ -31,7 +35,8 @@ public class WordList {
       } else if (numWords < DEFAULT_NUM_WORDS) {
         System.out.println(warningMessage);
       }
-      loadList();
+      String[] wordList = getWordList(WORD_LIST_FILE);
+      System.out.println(Arrays.toString(wordList)); // FIXME - Get rid of this debugging.
     }
     catch (NumberFormatException ex) {
       ex.printStackTrace();
@@ -61,9 +66,17 @@ public class WordList {
       warningMessage = properties.getProperty("warning.message");
     }
   }
-  // TODO finish loadList method.
-  private static void loadList() throws IOException{
-    try(IntputStream input = WordList.class.getClassLoader().getResourceAsStream(name))
+  
+  public static String[] getWordList(String listPath) throws IOException{
+    try(BufferedReader reader 
+        = new BufferedReader(new InputStreamReader(WordList.class.getClassLoader().getResourceAsStream(listPath)))){
+      ArrayList<String> words = new ArrayList<>();
+      for (String line = reader.readLine(); line != null; line = reader.readLine()){
+        words.add(line.split("\\s+")[1]);
+      }
+      return words.toArray(new String[]{});
+    }
+    
   }
 
 }
