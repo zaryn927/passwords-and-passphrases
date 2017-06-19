@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
+import java.util.Random;
 
 public class WordList {
   
@@ -21,22 +21,23 @@ public class WordList {
 
   public static void main(String[] args) {
     
-    int numWords;
+    int phraseLength;
     
     try{
       loadResources();
       if (args.length > 0) {
-        numWords = Integer.parseInt(args[0]);
+        phraseLength = Integer.parseInt(args[0]);
       } else {
-        numWords = DEFAULT_NUM_WORDS;
+        phraseLength = DEFAULT_NUM_WORDS;
       }
-      if (numWords <= 0) {
+      if (phraseLength <= 0) {
         throw new IllegalArgumentException(errorMessage);
-      } else if (numWords < DEFAULT_NUM_WORDS) {
+      } else if (phraseLength < DEFAULT_NUM_WORDS) {
         System.out.println(warningMessage);
       }
       String[] wordList = getWordList(WORD_LIST_FILE);
-      System.out.println(Arrays.toString(wordList)); // FIXME - Get rid of this debugging.
+      String[] selectedWords = getRandomWords(phraseLength, wordList);
+      System.out.println(getJoinedString(selectedWords));
     }
     catch (NumberFormatException ex) {
       ex.printStackTrace();
@@ -77,6 +78,25 @@ public class WordList {
       return words.toArray(new String[]{});
     }
     
+  }
+  
+  public static String[] getRandomWords(int numWords, String[] wordList) {
+    String[] selection = new String[numWords];
+    Random rng = new Random();
+    for (int i = 0; i < selection.length; i++){
+      int selectedPosition = rng.nextInt(wordList.length);
+      selection[i] = wordList[selectedPosition];
+    }
+    return selection;
+  }
+  
+  private static String getJoinedString(String[] source) {
+    StringBuilder builder = new StringBuilder();
+    for(String item : source) {
+      builder.append(item);
+      builder.append(" ");
+    }
+    return builder.toString().trim();
   }
 
 }
