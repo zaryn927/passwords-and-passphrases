@@ -19,7 +19,7 @@ public class PasswordGenerator {
   private char[] pool = null;
   private int minLength = 6;
   private int maxLength = 12;
-  private Random rng = new Random();
+  protected Random rng = new Random();
   private boolean includeUpperCase = true;
   private boolean includeLowerCase = true;
   private boolean includeNumbers = true;
