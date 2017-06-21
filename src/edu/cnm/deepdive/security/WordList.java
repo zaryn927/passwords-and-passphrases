@@ -7,9 +7,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
-
+/**
+ * Gets a random subset of words from a list.
+ * 
+ * @author Sky Link
+ */
 public class WordList {
   
+  /** The default value used for  the phrase length, if none is specified. */
   public static final int DEFAULT_NUM_WORDS = 5;
   
   private static final String PROPERTIES_FILE = "resources/text.properties";
@@ -18,7 +23,14 @@ public class WordList {
   private static String usageMessage;
   private static String errorMessage;
   private static String warningMessage;
-
+  
+  /**
+   * Loads a file and selects a subset of random words to print out.
+   * The number of words in the subset is determined by the command line argument.
+   * If no arguments are specified, {@link #DEFAULT_NUM_WORDS DEFAULT_NUM_WORDS} is used.
+   * 
+   * @param args Specifies the number of words to be used in the phrase.
+   */
   public static void main(String[] args) {
     
     int phraseLength;
@@ -68,6 +80,13 @@ public class WordList {
     }
   }
   
+  /**
+   * Loads the word list from a text file specified as an argument.
+   * 
+   * @param listPath Takes the file path to the list text file as a String.
+   * @return Returns the word list text file as a String Array.
+   * @throws IOException Happens when word list can't be read.
+   */
   public static String[] getWordList(String listPath) throws IOException{
     try(BufferedReader reader 
         = new BufferedReader(new InputStreamReader(WordList.class.getClassLoader().getResourceAsStream(listPath)))){
@@ -80,6 +99,13 @@ public class WordList {
     
   }
   
+  /**
+   * Takes a list of words and returns a random subset of that list of the specified size.
+   * 
+   * @param numWords The number of words desired for the random phrase.
+   * @param wordList A list of words in the form of a String Array.
+   * @return Returns another String Array that is a random subset of the second argument.
+   */
   public static String[] getRandomWords(int numWords, String[] wordList) {
     String[] selection = new String[numWords];
     Random rng = new Random();

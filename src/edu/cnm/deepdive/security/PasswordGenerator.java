@@ -4,22 +4,25 @@ import java.util.Random;
 
 /**
  * Implementation of a simple password generator. This includes support for elementary
- * character-set-based rules, but not (yet) regular expressinos.
+ * character-set-based rules, but not (yet) regular expressions.
  * 
  * @author Sky Link
  * @version 1.0
  */
 public class PasswordGenerator {
+
+  /** Basic random number generator */
+  protected Random rng = new Random();
   
   private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   private static final String LOWERCASE = UPPERCASE.toLowerCase();
   private static final String NUMBERS = "0123456789";
   private static final String PUNCTUATION = "!@#$%&*,.";
   private static final String AMBIGUOUS = "[Ol]";
+  
   private char[] pool = null;
   private int minLength = 6;
   private int maxLength = 12;
-  protected Random rng = new Random();
   private boolean includeUpperCase = true;
   private boolean includeLowerCase = true;
   private boolean includeNumbers = true;
@@ -30,23 +33,43 @@ public class PasswordGenerator {
    * Instantiate PasswordGenerator class for testing password generation.
    * 
    * @param args Command-line parameters for password generation options.
+   * NOT CURRENTLY IMPLEMENTED
    */
   public static void main(String[] args) {
     // TODO Auto-generated method stub
 
   }
-
+  
+  /**
+   * Default constructor where fields are initialized to default values.
+   */
   public PasswordGenerator() {
-    System.out.println("in default constructor");
+    
   }
 
+  /**
+   * Constructor that allows user to specify the minimum and maximum length of password.
+   * 
+   * @param minLength The minimum length of the password.
+   * @param maxLength The maximum lenght of the password.
+   */
   public PasswordGenerator(int minLength, int maxLength) {
     this();
-    System.out.println("in overloaded constructor");
     this.minLength = minLength;
     this.maxLength = maxLength;
   }
 
+  /**
+   * Constructor that allows user to specify values of all instance fields of the class.
+   * 
+   * @param minLength The minimum length of the password.
+   * @param maxLength The maximum length of the password.
+   * @param includeUpperCase Allow upper case in the password?
+   * @param includeLowerCase Allow lower case in the password?
+   * @param includeNumbers Allow numbers in the password?
+   * @param includePunctuation Allow punctuation in the password?
+   * @param excludeAmbiguous Exclude lower case "l" and upper case "O"?
+   */
   public PasswordGenerator(int minLength, int maxLength, boolean includeUpperCase,
       boolean includeLowerCase, boolean includeNumbers, boolean includePunctuation,
       boolean excludeAmbiguous) {
@@ -60,28 +83,36 @@ public class PasswordGenerator {
   }
 
   /**
-   * @return the maxLength
+   * Gives access to the maxLength field.
+   * 
+   * @return maxLength The maximum length of the password.
    */
   public int getMaxLength() {
     return maxLength;
   }
 
   /**
-   * @param maxLength the maxLength to set
+   * Mutates the field maxLength.
+   * 
+   * @param maxLength The value to change the maxLength field to.
    */
   protected void setMaxLength(int maxLength) {
     this.maxLength = maxLength;
   }
 
   /**
-   * @return the minLength
+   * Gives access to the minLength field.
+   * 
+   * @return minLength The minimum length of the password.
    */
   public int getMinLength() {
     return minLength;
   }
 
   /**
-   * @param minLength the minLength to set
+   * Mutates the field minLength.
+   * 
+   * @param minLength The value to change the minLength field to.
    */
   protected void setMinLength(int minLength) {
     this.minLength = minLength;
@@ -110,6 +141,13 @@ public class PasswordGenerator {
     }
   }
 
+  /**
+   * Establishes a pool of characters to be chosen from and 
+   * then creates a password that consists of random characters 
+   * from the pool and is between the minimum and maximum length.
+   * 
+   * @return Returns generated password.
+   */
   public String generate() {
     setupPool();
     int passwordLength = minLength + rng.nextInt(maxLength - minLength + 1);
