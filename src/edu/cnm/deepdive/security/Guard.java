@@ -72,6 +72,9 @@ public class Guard {
                                                  .numberOfArgs(1)
                                                  .type(String.class)
                                                  .build();
+      Option modeOption = Option.builder("m").longOpt("password-mode")
+                                             .hasArg(false)
+                                             .build();
       Options options = new Options().addOption(lengthOption)
                                      .addOption(delimiterOption)
                                      .addOption(wordListOption)
@@ -79,7 +82,8 @@ public class Guard {
                                      .addOption(excludeLowerOption)
                                      .addOption(excludeDigitsOption)
                                      .addOption(excludePunctuationOption)
-                                     .addOption(includeAmbiguousOption);
+                                     .addOption(includeAmbiguousOption)
+                                     .addOption(modeOption);
       DefaultParser parser = new DefaultParser();
       HashMap<String, Object> map = new HashMap<>();
       CommandLine cmdLine = parser.parse(options, args);
@@ -97,11 +101,17 @@ public class Guard {
   }
   
   static String generateArtifact(HashMap<String, Object> map) {
+    if (map.containsKey("m")) {
+      PasswordGenerator gen = new SecurePasswordGenerator();
+      // TODO Set fields for all specified options.
+      return gen.generate();
+    }
     return null;// FIXME
   }
   
   static void emitArtifact(String artifact) {
-    
+    // TODO make this smarter.
+    System.out.println(artifact);
   }
 
 }
