@@ -29,8 +29,9 @@ public class Guard {
   }
     
   static String generateArtifact(HashMap<String, Object> map) {
+    // TODO Invoke methods for password or passphrase creation based on options (if statement)
     if (map.containsKey("m")) {
-      PasswordGenerator gen = new SecurePasswordGenerator();
+      PasswordGenerator gen = new SecurePasswordGenerator();// move to password creation method everything down to next brace
       // TODO Set fields for all specified options.
       return gen.generate();
     }
@@ -41,5 +42,6 @@ public class Guard {
     // TODO make this smarter.
     System.out.println(artifact);
   }
+  // TODO methods for password and passphrase creation.
 
 }

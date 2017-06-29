@@ -30,9 +30,9 @@ public class Options {
   private static final String DIGITS_OPTION_KEY = "exclude-digits.option";
   private static final String PUNCTUATION_OPTION_KEY = "exclude-punctuation.option";
   private static final String AMBIGUOUS_OPTION_KEY = "include-ambiguous.option";
-  
+  // TODO new warning messages/ add message properties file
   static HashMap<String, Object> getOptions(String[] args) {
-    
+    // TODO Catch invalid options, decide how to handle.
     try {
       
       ResourceBundle bundle = ResourceBundle.getBundle(OPTIONS_DESCRIPTION_BUNDLE);
