@@ -3,6 +3,7 @@
  */
 package edu.cnm.deepdive.security;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -21,17 +22,29 @@ import org.apache.commons.cli.UnrecognizedOptionException;
  *
  */
 public class Options {
+  
+  public static final int MAXIMUM_RECOMMENDED_PASSPHRASE_LENGTH = 10;
+  public static final int MINIMUM_RECOMMENDED_PASSPHRASE_LENGTH = 6;
+  public static final int MAXIMUM_RECOMMENDED_PASSWORD_LENGTH = 16;
+  public static final int MINIMUM_RECOMMENDED_PASSWORD_LENGTH = 8;
+
   public static final String JAR_FILE_NAME = "guard.jar";
   
-  private static final String INVALID_DELIMITERS = "[<>&|*?^]";
+  private static final String INVALID_DELIMITERS_REGEX = "^.*[<>&|*?^]+.*$";
   
   private static final String PASSWORD_EXTREME_LENGTH_WARNING = "pw.warning.extremelength.message";
   private static final String PASSPHRASE_EXTREME_LENGTH_WARNING = "pp.warning.extremelength.message";
   private static final String PASSWORD_LENGTH_WARNING = "pw.warning.length.message";
   private static final String PASSPHRASE_LENGTH_WARNING = "pp.warning.length.message";
-  private static final String OPTIONS_CONFLICT_WARNING = "opts.warning.conflict.message";
+  private static final String PASSPHRASE_OPTIONS_CONFLICT_WARNING = "pp.opts.warning.conflict.message";
+  private static final String PASSWORD_OPTIONS_CONFLICT_WARNING = "pw.opts.warning.conflict.message";
+  private static final String AMBIGUOUS_CHARACTER_WARNING = "pw.warning.ambiguous.message";
+  
+  
   private static final String LENGTH_ERROR = "error.length.message";
   private static final String RESERVED_CHARACTER_ERROR = "pp.error.reserved.message";
+  private static final String WORD_LIST_ERROR = "pp.error.list.message";
+  
   
   private static final String OPTIONS_DESCRIPTION_BUNDLE = "resources/options";
   private static final String MESSAGES_BUNDLE = "resources/messages";
@@ -53,7 +66,7 @@ public class Options {
   private static final String PUNCTUATION_OPTION_KEY = "exclude-punctuation.option";
   private static final String AMBIGUOUS_OPTION_KEY = "include-ambiguous.option";
   
-  private static String usageMessage = "java -jar %s [options]";
+  private static String usageMessage = String.format("java -jar %s [options]", JAR_FILE_NAME);
   
   // TODO new warning messages/ add message properties file
   static HashMap<String, Object> getOptions(String[] args) {
@@ -96,11 +109,15 @@ public class Options {
     } catch (NegativeArraySizeException ex) {
       displayError(messageBundle, LENGTH_ERROR, options, null);
       return null;
+    } catch (FileNotFoundException ex) {
+      displayError(messageBundle, WORD_LIST_ERROR, options, ex.getMessage());
+      return null;
     }
 
   }
   
-  private static void validateCommandLine(HashMap<String, Object> map, ResourceBundle messageBundle) {
+  private static void validateCommandLine(HashMap<String, Object> map, ResourceBundle messageBundle) 
+      throws FileNotFoundException, IllegalArgumentException, NegativeArraySizeException {
     if (map.containsKey("m")) {
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         switch (entry.getKey()) {
@@ -109,17 +126,21 @@ public class Options {
             if (length <= 0) {
               throw new NegativeArraySizeException();
             }
+            if (length < MINIMUM_RECOMMENDED_PASSWORD_LENGTH) {
+              System.out.printf(messageBundle.getString(PASSWORD_LENGTH_WARNING), MINIMUM_RECOMMENDED_PASSWORD_LENGTH);
+            } else if (length > MAXIMUM_RECOMMENDED_PASSWORD_LENGTH) {
+              System.out.printf(messageBundle.getString(PASSWORD_EXTREME_LENGTH_WARNING), MAXIMUM_RECOMMENDED_PASSWORD_LENGTH);
+            }
             break;
           case "a":
+            System.out.printf(messageBundle.getString(AMBIGUOUS_CHARACTER_WARNING));
             break;
           case "d":
           case "w":
+            System.out.printf(messageBundle.getString(PASSWORD_OPTIONS_CONFLICT_WARNING));
             break;
-          case "b":
-          case "s":
-          case "n":
-          case "p":
           default:
+            // Do nothing
         }
       }
     } else {
@@ -130,22 +151,28 @@ public class Options {
             if (length <= 0) {
               throw new NegativeArraySizeException();
             }
+            if (length < MINIMUM_RECOMMENDED_PASSPHRASE_LENGTH) {
+              System.out.printf(messageBundle.getString(PASSPHRASE_LENGTH_WARNING), MINIMUM_RECOMMENDED_PASSPHRASE_LENGTH);
+            } else if (length > MAXIMUM_RECOMMENDED_PASSPHRASE_LENGTH) {
+              System.out.printf(messageBundle.getString(PASSPHRASE_EXTREME_LENGTH_WARNING), MAXIMUM_RECOMMENDED_PASSPHRASE_LENGTH);
+            }
             break;
           case "d":
             String delimiter = (String) entry.getValue();
-            if (delimiter.matches(INVALID_DELIMITERS)) {
+            if (delimiter.matches(INVALID_DELIMITERS_REGEX)) {
               throw new IllegalArgumentException();
             }
             break;
           case "w":
+            String wordListFile = (String) entry.getValue();
+            try {
+              ResourceBundle.getBundle(wordListFile);
+            } catch (MissingResourceException ex) {
+              throw new FileNotFoundException(wordListFile);
+            }
             break;
-          case "b":
-          case "s":
-          case "n":
-          case "p":
-          case "a":
           default:
-            break;
+            System.out.printf(messageBundle.getString(PASSPHRASE_OPTIONS_CONFLICT_WARNING));
         }
       }
     }

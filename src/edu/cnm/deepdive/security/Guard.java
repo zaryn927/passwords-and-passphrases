@@ -4,6 +4,7 @@
 package edu.cnm.deepdive.security;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Entry point for the password/passphrase generation application.
@@ -31,19 +32,63 @@ public class Guard {
   }
     
   static String generateArtifact(HashMap<String, Object> map) {
-    // TODO Invoke methods for password or passphrase creation based on options (if statement)
     if (map.containsKey("m")) {
-      PasswordGenerator gen = new SecurePasswordGenerator();// move to password creation method everything down to next brace
-      // TODO Set fields for all specified options.
+      PasswordGenerator gen = new SecurePasswordGenerator();
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+        switch (entry.getKey()) {
+          case "L":
+            int length = ((Number) entry.getValue()).intValue();
+            gen.setMinLength(length);
+            gen.setMaxLength(length);
+            break;
+          case "a":
+            gen.setAmbiguousExcluded(false);
+            break;
+          case "b":
+            gen.setUpperCaseIncluded(false);
+            break;
+          case "s":
+            gen.setLowerCaseIncluded(false);
+            break;
+          case "n":
+            gen.setNumbersIncluded(false);
+            break;
+          case "p":
+            gen.setPunctuationIncluded(false);
+            break;
+          default:
+            // Do nothing
+        }
+      }
+      
+      return gen.generate();
+    } else {
+      PassphraseGenerator gen = new PassphraseGenerator();
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+        switch (entry.getKey()) {
+          case "L":
+            int length = ((Number) entry.getValue()).intValue();
+            gen.setLength(length);
+            break;
+          case "d":
+            String delimiter = (String) entry.getValue();
+            gen.setDelimiter(delimiter);
+            break;
+          case "w":
+            String wordListFile = (String) entry.getValue();
+            gen.setWordList(wordListFile);
+            break;
+          default:
+            // Do nothing
+        }
+      }
       return gen.generate();
     }
-    return null;// FIXME
   }
   
   static void emitArtifact(String artifact) {
-    // TODO make this smarter.
+   
     System.out.println(artifact);
   }
-  // TODO methods for password and passphrase creation.
 
 }
