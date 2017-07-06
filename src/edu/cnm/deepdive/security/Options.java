@@ -18,17 +18,23 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
 
 /**
+ * Sets up command line options for user specification.
+ * 
  * @author Sky Link
- *
  */
 public class Options {
   
+  /** The maximum recommended length of a passphrase. */
   public static final int MAXIMUM_RECOMMENDED_PASSPHRASE_LENGTH = 10;
+  /** The minimum recommended length of a passphrase. */
   public static final int MINIMUM_RECOMMENDED_PASSPHRASE_LENGTH = 6;
+  /** The maximum recommended length of a password. */
   public static final int MAXIMUM_RECOMMENDED_PASSWORD_LENGTH = 16;
+  /** The minimum recommended length of a password. */
   public static final int MINIMUM_RECOMMENDED_PASSWORD_LENGTH = 8;
-
+  /** The name of the jar file the application is exported to. */
   public static final String JAR_FILE_NAME = "guard.jar";
+  
   
   private static final String INVALID_DELIMITERS_REGEX = "^.*[<>&|*?^]+.*$";
   
@@ -68,7 +74,6 @@ public class Options {
   
   private static String usageMessage = String.format("java -jar %s [options]", JAR_FILE_NAME);
   
-  // TODO new warning messages/ add message properties file
   static HashMap<String, Object> getOptions(String[] args) {
 
     ResourceBundle messageBundle = null;

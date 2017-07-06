@@ -10,16 +10,17 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
+ * Creates a passphrase of specified length from a predetermined word list.
+ * 
  * @author Sky Link
- *
  */
 public class PassphraseGenerator {
   
-  /** */
+  /** The word list used if none other is specified */
   public static final String DEFAULT_WORD_LIST = "resources/wordlist";
-  /** */
+  /** A space is used if no other delimiter is specified */
   public static final String DEFAULT_DELIMITER = " ";
-  /** */
+  /** The default number of words to be used in the passphrase*/
   public static final int DEFAULT_LENGTH = 6;
   
   private String wordList = DEFAULT_WORD_LIST;
@@ -29,14 +30,14 @@ public class PassphraseGenerator {
   private ArrayList<String> pool = null;
   
   /**
-   * 
+   * Creates instance. Same functionality as default constructor.
    */
   public PassphraseGenerator() {
     super();
   }
   
   /**
-   * 
+   * Creates a pool of words by adding them to an array list from the word list file.
    */
   protected void setupPool() {
     ResourceBundle bundle = ResourceBundle.getBundle(wordList);
@@ -50,15 +51,16 @@ public class PassphraseGenerator {
   }
   
   /**
-   * 
+   * Creates a secure random number generator
    */
   protected void setupRng() {
     rng = new SecureRandom();
   }
   
   /**
+   * Generates a passphrase from a pool of words
    * 
-   * @return
+   * @return The passphrase created
    */
   public String generate() {
     if (pool == null) {
@@ -68,10 +70,12 @@ public class PassphraseGenerator {
       setupRng();
     }
     StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      String word = pool.get(rng.nextInt(pool.size()));
-      builder.append(word);
+    String word = pool.get(rng.nextInt(pool.size()));
+    builder.append(word);
+    for (int i = 0; i < length - 1; i++) {
+      word = pool.get(rng.nextInt(pool.size()));
       builder.append(delimiter);
+      builder.append(word);
     }
     return builder.toString().trim();
   }

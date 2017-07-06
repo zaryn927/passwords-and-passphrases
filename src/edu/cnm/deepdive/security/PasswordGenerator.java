@@ -16,7 +16,7 @@ public class PasswordGenerator {
   /** Ambiguous characters that may optionally be excluded from the password. */
   public static final String AMBIGUOUS = "[Ol]";
   
-  /** */
+  /** The default password length if none is specified */
   public static final int DEFAULT_PASSWORD_LENGTH = 12;
   
   private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -102,7 +102,7 @@ public class PasswordGenerator {
   }
   
   /**
-   * 
+   * Creates a random number generator.
    */
   protected void setupRng() {
     if (rng == null) {
