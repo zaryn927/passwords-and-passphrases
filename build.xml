@@ -20,9 +20,13 @@
 	
 	<target name="javadoc" depends="-create.javadoc.dir">
 		<javadoc 
+			link="http://docs.oracle.com/javase/8/docs/api/"
 			sourcepath="${source.dir}" 
 			destdir="${javadoc.dir}"
-			classpath="${cli.lib}" />
+			classpath="${cli.lib}"
+			linksource="yes"
+			access="protected"
+			failonwarning="true"/>
 	</target>
 		
 	<target name="jar" depends="-create.dist.dir, compile, javadoc">
