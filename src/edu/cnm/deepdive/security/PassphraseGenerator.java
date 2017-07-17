@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
  * Creates a passphrase of specified length from a predetermined word list.
  * 
  * @author Sky Link
+ * @version 1.0
  */
 public class PassphraseGenerator {
   

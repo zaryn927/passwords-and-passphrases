@@ -11,6 +11,7 @@ import java.util.Random;
  * Gets a random subset of words from a list.
  * 
  * @author Sky Link
+ * @version 1.0
  */
 public class WordList {
   

@@ -7,6 +7,7 @@ import java.security.SecureRandom;
  * Creates a more secure password.
  * 
  * @author Sky Link
+ * @version 1.0
  */
 public class SecurePasswordGenerator extends PasswordGenerator {
   

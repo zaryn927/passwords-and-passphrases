@@ -21,6 +21,7 @@ import org.apache.commons.cli.UnrecognizedOptionException;
  * Sets up command line options for user specification.
  * 
  * @author Sky Link
+ * @version 1.0
  */
 public class Options {
   

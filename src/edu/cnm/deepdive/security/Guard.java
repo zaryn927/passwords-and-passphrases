@@ -13,6 +13,7 @@ import java.util.Map;
  * to select words from a list or characters from a pool.
  * 
  * @author Sky Link
+ * @version 1.0
  */
 public class Guard {
 
