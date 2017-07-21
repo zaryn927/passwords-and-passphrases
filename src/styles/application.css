@@ -1,0 +1,8 @@
+#header {
+	-fx-font-size: 2em;
+	-fx-font-weight: bold;
+}
+
+StackPane VBox {
+	-fx-background-color: white;
+}
