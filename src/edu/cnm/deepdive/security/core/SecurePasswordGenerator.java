@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.security;
+package edu.cnm.deepdive.security.core;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

@@ -3,18 +3,19 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?.
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <VBox 
 		xmlns:fx="http://javafx.com/fxml/1"
-		fx:controller="edu.cnm.deepdive.security.GuardUI"
+		fx:controller="edu.cnm.deepdive.security.ui.Controller"
 		alignment="top_center"
 		spacing="10" >
 	
@@ -111,7 +112,7 @@
 							fx:id="password"
 							id="password"
 							editable="false"
-							prefColumnCount="18"
+							prefColumnCount="18" />
 				
 				</HBox>
 					
@@ -136,7 +137,61 @@
 							bottom="20" />
 							
 				</padding>
+								
+				<Label 
+					fx:id="delimiterChoiceLabel" 
+					id="delimiter-choice-label" 
+					text="%delimiter.choice.label"
+					mnemonicParsing="true" />
+				
+				<ChoiceBox
+				    fx:id="delimiterChoice"
+				    id="delimiter-choice" > 
+				
+				</ChoiceBox>
+				
+				<Label 
+					fx:id="passphraseLengthLabel" 
+					id="passphrase-length-label" 
+					text="%passphrase.length.label" 
+					mnemonicParsing="true" >
+					<padding>
+						<Insets
+							top="20" />
+					</padding>
+					</Label>
+
+				<Slider 
+					fx:id="passphraseLength" 
+					id="passphrase-length"
+					min="6"
+					max="12"
+					majorTickUnit="3"
+					minorTickCount="2"
+					blockIncrement="1"
+					showTickLabels="true"
+					showTickMarks="true"
+					snapToTicks="true" />
+
+				<HBox
+						alignment="center"
+						spacing="10">
+
+					<Button 
+						fx:id="generatePassphrase"
+						id="generate-passphrase" 
+						text="%generate.passphrase.label" 
+						onAction="#generatePassphrase"/>
 					
+					<TextField
+						fx:id="passphrase"
+						id="passphrase"
+						editable="false" 
+						prefColumnCount="50" />
+						
+				</HBox>
+				
+				
 			</VBox>
 			
 		</Tab>

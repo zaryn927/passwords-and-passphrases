@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.cnm.deepdive.security;
+package edu.cnm.deepdive.security.command;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
